@@ -40,15 +40,14 @@ public class Game {
     private String[][] map;
     // Player coordinates, Treasure coordinates, Turn number
     private int x, y, tx, ty, digs;
-    // Scorekeeper
-    // Using a TreeMap because I want the scores sorted by least moves to greatest moves
-    private static TreeMap<Integer, String> scores;
+    HighScores hs;
 
     // Constructor, to initialize the instance variable
     public Game() {
         // Initialize the map into a blank state
         map = new String[10][10];
-        scores = new TreeMap<>();
+        hs = new HighScores();
+        HighScores.restore();
     }
 
     // Initial method, sets up while loop for turns
@@ -66,18 +65,10 @@ public class Game {
                         displayMap();
                     } while(!action());
                     System.out.println("Congrats, you found the treasure in " + digs + " digs");
-                    scores.put(digs, Utils.inputStr("Enter your name: "));
+                    HighScores.save(new Score(Utils.inputStr("Enter your name: "), digs));                    
                     break;
                 case "s":
-                    if(scores.size() > 0) {
-                        int lastKey = 1;
-                        while(scores.higherKey(lastKey) != null) {
-                            System.out.println(scores.get(scores.higherKey(lastKey))+" - "+scores.higherKey(lastKey)+" digs");
-                            lastKey = scores.higherKey(lastKey);
-                        }
-                    } else {
-                        System.out.println("No scores have been recorded");
-                    }
+                    System.out.println(hs);
                     break;
                 case "q":
                     return;
