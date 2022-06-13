@@ -8,6 +8,7 @@ Change history:
 5/16: Created (Was not here 5/12)
 5/17: Tried to do UI & KeyListening
 5/19: Gave up on UI and returned to the text version
+Full change log in git
 */
 
 /**
@@ -34,8 +35,6 @@ notes: maybe instead of counting turns, count how many digs
 6. Uses a hash map
 
  */
-import java.util.TreeMap;
-
 public class Game {
     private String[][] map;
     // Player coordinates, Treasure coordinates, Turn number
@@ -46,8 +45,8 @@ public class Game {
     public Game() {
         // Initialize the map into a blank state
         map = new String[10][10];
-        hs = new HighScores();
-        HighScores.restore();
+        hs = HighScores.restore();
+        if(hs == null) { hs = new HighScores(); }
     }
 
     // Initial method, sets up while loop for turns
@@ -65,7 +64,7 @@ public class Game {
                         displayMap();
                     } while(!action());
                     System.out.println("Congrats, you found the treasure in " + digs + " digs");
-                    HighScores.save(new Score(Utils.inputStr("Enter your name: "), digs));                    
+                    hs.save(new Score(Utils.inputStr("Enter your name: "), digs));                    
                     break;
                 case "s":
                     System.out.println(hs);
